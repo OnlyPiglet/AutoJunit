@@ -13,6 +13,14 @@ import java.io.*;
  */
 public class GenClassLoader extends ClassLoader {
 
+    private String classQualifiedName;
+
+    public GenClassLoader setClassName(String classQualifiedName)throws ClassNotFoundException{
+
+        this.classQualifiedName = classQualifiedName;
+        return this;
+    }
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException{
 
@@ -26,7 +34,7 @@ public class GenClassLoader extends ClassLoader {
 
             else{
                 //defineClass方法将字节码转化为类
-                return defineClass(name,classData,0,classData.length);
+                return defineClass(this.classQualifiedName,classData,0,classData.length);
             }
 
         }catch (IOException e){
@@ -41,7 +49,7 @@ public class GenClassLoader extends ClassLoader {
         InputStream in = null;
         ByteArrayOutputStream out = null;
         try {
-            String location = classAbsName + ".class";
+            String location = classAbsName;//.replace("\\",".");
             in=new FileInputStream(location);
             out=new ByteArrayOutputStream();
             byte[] buffer=new byte[2048];
