@@ -39,6 +39,38 @@
             <version>1.11.9</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.unquietcode.tools.jcodemodel/codemodel -->
+        <dependency>
+            <groupId>com.unquietcode.tools.jcodemodel</groupId>
+            <artifactId>codemodel</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+
+
+
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <compilerVersion>1.8</compilerVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
 
 </project>
