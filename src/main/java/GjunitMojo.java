@@ -1,4 +1,5 @@
 import file2class.GenClassLoader;
+import file2class.GenClassMavenDentor;
 import generator.TestSourceGenertor;
 import log.LoggerHolder;
 import org.apache.commons.io.FileUtils;
@@ -8,6 +9,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +24,14 @@ import java.util.List;
  * @Date: 2019/8/12 10:24
  * @Version: 0.1
  */
-@Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true)
+@Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.COMPILE)
 public class GjunitMojo extends AbstractMojo {
 
     private final static GenClassLoader gcl = new GenClassLoader();
+
+    private final static GenClassMavenDentor gcmd = new GenClassMavenDentor(GjunitMojo.class.getClassLoader().getParent());
+
+
     private String[] extension = {"class"};
 
 
@@ -66,6 +72,9 @@ public class GjunitMojo extends AbstractMojo {
                 LoggerHolder.log.info("need to expired" + absClassfilePath);
                 Class clazz = gcl.LoadClass(absClassfilePath);
                 assert(clazz != null);
+
+                Thread.currentThread().setContextClassLoader(gcmd);
+
                 //generator testsource  by clazz
                 LoggerHolder.log.info(testSource.getAbsolutePath());
                 TestSourceGenertor tsg = new TestSourceGenertor(testSource);

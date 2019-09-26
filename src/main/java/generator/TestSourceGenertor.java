@@ -30,6 +30,7 @@ public class TestSourceGenertor {
 
     public void generatorTestSource(Class<?> clazz){
 
+
         JCodeModel cm = new JCodeModel();
 
         JPackage p = cm._package(ClassUtils.getPackageName(clazz));
@@ -39,6 +40,7 @@ public class TestSourceGenertor {
             JDefinedClass c =  p._class(ClassUtils.getShortClassName(clazz)+"Test");
 
             Method[] methods = clazz.getDeclaredMethods();
+
 
             for(Method m : methods){
 

@@ -4,26 +4,26 @@ import log.LoggerHolder;
 
 import java.io.*;
 
-/**
- * @ProjectName: ajunit
- * @Package: PACKAGE_NAME
- * @ClassName: file2class.GenClassLoader
- * @Author: 吴成昊
- * @Description:
- * @Date: 2019/8/12 11:05
- * @Version: 0.1
- */
-public class GenClassLoader extends ClassLoader {
+public class GenClassMavenDentor extends ClassLoader {
 
-    public Class<?> LoadClass(String absClassPath) throws ClassNotFoundException{
-        return findMyClass(absClassPath);
+
+
+    public GenClassMavenDentor(ClassLoader parent){
+
+        super(parent);
+
     }
 
-    protected Class<?> findMyClass(String name) throws ClassNotFoundException{
+    public Class<?> loadClass(String absClassPath) throws ClassNotFoundException{
+        return findClass(absClassPath);
+    }
+
+    protected Class<?> findClass(String name) throws ClassNotFoundException{
 
         try{
 
-            byte [] classData = getData(name);
+
+            byte [] classData = getData("/Users/mac/.m2/repository/"+name);
 
             if(classData==null || classData.length == 0){
 
