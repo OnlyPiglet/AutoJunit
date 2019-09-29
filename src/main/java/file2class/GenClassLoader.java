@@ -15,11 +15,45 @@ import java.io.*;
  */
 public class GenClassLoader extends ClassLoader {
 
-    public Class<?> LoadClass(String absClassPath) throws ClassNotFoundException{
-        return findMyClass(absClassPath);
+    private ClassLoader parent;
+
+
+    public GenClassLoader(ClassLoader parent){
+
+        super(parent);
+
     }
 
-    protected Class<?> findMyClass(String name) throws ClassNotFoundException{
+
+    public Class<?> LoadClass(String absClassPath) throws ClassNotFoundException{
+
+        Class<?> clazz = null;
+
+        try {
+
+            clazz = findClass(absClassPath);
+
+        }catch (ClassNotFoundException cnfe){
+
+            //ingore
+        }
+
+        if(clazz == null){
+
+            absClassPath = absClassPath.replace("\\.",System.lineSeparator());
+
+            LoggerHolder.log.info(absClassPath);
+
+
+            clazz = this.getParent().loadClass(absClassPath);
+
+        }
+
+        return clazz;
+    }
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException{
 
         try{
 
@@ -34,16 +68,20 @@ public class GenClassLoader extends ClassLoader {
             }
 
         }catch (IOException e){
-            LoggerHolder.log.error(e.getMessage(),e);
-        }
 
-        return super.findClass(name);
+            return super.findClass(name);
+
+        }
+        return null;
 
     }
+
+
 
     private byte[] getData(String classAbsName) throws IOException{
         InputStream in = null;
         ByteArrayOutputStream out = null;
+        LoggerHolder.log.info("classAbsName: "+classAbsName);
         try {
             String location = classAbsName;//.replace("\\",".");
             in=new FileInputStream(location);

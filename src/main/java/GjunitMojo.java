@@ -1,8 +1,8 @@
 import file2class.GenClassLoader;
-import file2class.GenClassMavenDentor;
 import generator.TestSourceGenertor;
 import log.LoggerHolder;
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,9 +10,14 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.project.MavenProject;
+import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 
 /**
@@ -24,12 +29,9 @@ import java.util.List;
  * @Date: 2019/8/12 10:24
  * @Version: 0.1
  */
-@Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.COMPILE)
+@Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.RUNTIME)
 public class GjunitMojo extends AbstractMojo {
 
-    private final static GenClassLoader gcl = new GenClassLoader();
-
-    private final static GenClassMavenDentor gcmd = new GenClassMavenDentor(GjunitMojo.class.getClassLoader().getParent());
 
 
     private String[] extension = {"class"};
@@ -51,15 +53,50 @@ public class GjunitMojo extends AbstractMojo {
 
     @Parameter(required = false,property = "sourceClassDir",defaultValue = "${project.build.outputDirectory}")
     private File sourceClassDir;
+//
+    @Parameter(required = false,property = "project",defaultValue = "${project}")
+    private MavenProject project;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+
+        //---------set a new classload with the dependenies maven classpath -----
+
+        List runtimeClasspathElements = null;
+        try {
+            runtimeClasspathElements = project.getRuntimeClasspathElements();
+
+
+        } catch (DependencyResolutionRequiredException e) {
+            e.printStackTrace();
+        }
+        URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
+        for (int i = 0; i < runtimeClasspathElements.size(); i++) {
+            String element = (String) runtimeClasspathElements.get(i);
+            try {
+                runtimeUrls[i] = new File(element).toURI().toURL();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                LoggerHolder.log.error(e.getMessage(),e);
+            }
+        }
+
+
+        URLClassLoader newLoader = new URLClassLoader(runtimeUrls,
+                Thread.currentThread().getContextClassLoader());
+
+        Thread.currentThread().setContextClassLoader(newLoader);
+
+
+        GenClassLoader gcl = new GenClassLoader(newLoader);
+        //--------------
+
 
         if(!testSource.exists()){
             try {
                 FileUtils.forceMkdir(testSource);
             }catch (IOException ioe){
-                ioe.printStackTrace();
                 LoggerHolder.log.error(ioe.getMessage(),ioe);
             }
         }
@@ -68,19 +105,19 @@ public class GjunitMojo extends AbstractMojo {
 
         for(File classfile : class_files){
             try {
-                String absClassfilePath = classfile.getAbsoluteFile().getAbsolutePath();
-                LoggerHolder.log.info("need to expired" + absClassfilePath);
-                Class clazz = gcl.LoadClass(absClassfilePath);
-                assert(clazz != null);
 
-                Thread.currentThread().setContextClassLoader(gcmd);
+                LoggerHolder.log.info(classfile.getName());
+
+                String absClassfilePath = classfile.getAbsoluteFile().getAbsolutePath();
+
+
+                Class clazz = gcl.LoadClass(absClassfilePath);
 
                 //generator testsource  by clazz
-                LoggerHolder.log.info(testSource.getAbsolutePath());
                 TestSourceGenertor tsg = new TestSourceGenertor(testSource);
                 tsg.generatorTestSource(clazz);
 
-            }catch (ClassNotFoundException cnfe){
+            }catch (ClassNotFoundException  cnfe){
                 LoggerHolder.log.error(cnfe.getMessage(),cnfe);
             }
         }

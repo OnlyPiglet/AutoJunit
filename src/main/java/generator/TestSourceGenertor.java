@@ -44,8 +44,19 @@ public class TestSourceGenertor {
 
             for(Method m : methods){
 
-                JMethod jm = c.method(JMod.PUBLIC,void.class,m.getName()+"Test");
-                jm.annotate(Test.class);
+                Class<?> [] clazzs = m.getExceptionTypes();
+
+                for(Class<?> clazzd : clazzs){
+
+
+
+                    JMethod jm = c.method(JMod.PUBLIC,void.class,m.getName()+"With"+clazzd.getSimpleName()+"Test");
+                    JAnnotationUse jau = jm.annotate(Test .class);
+                    jau.param("expected",clazzd);
+
+                }
+
+
             }
 
             JMethod jmb = c.method(JMod.PUBLIC,void.class,"before");
