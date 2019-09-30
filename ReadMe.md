@@ -8,7 +8,7 @@
 
 [![AJ](https://img.shields.io/badge/AJ-AutoJunit-orange)](https://github.com/OnlyPiglet/ajunit)
 
-![AJ](.\img\AJ.png)
+![AJ](./img/AJ.png)
 
 自动生成基于Maven工程的Junit的单元测试文件
 
