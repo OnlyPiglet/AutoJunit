@@ -16,9 +16,9 @@
 
 ```xml
 <plugin>    
-    <groupId>com.onlypiglet</groupId>    
-    <artifactId>ajunit</artifactId>    
-    <version>1.0-SNAPSHOT</version>    
+    <groupId>com.github.onlypiglet</groupId>
+    <artifactId>autojunit</artifactId>
+    <version>1.0.0-alpha</version>   
     <executions>        
         <execution>            
             <phase>generate-test-sources</phase>            
