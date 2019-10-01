@@ -4,15 +4,7 @@ import log.LoggerHolder;
 
 import java.io.*;
 
-/**
- * @ProjectName: ajunit
- * @Package: PACKAGE_NAME
- * @ClassName: file2class.GenClassLoader
- * @Author: 吴成昊
- * @Description:
- * @Date: 2019/8/12 11:05
- * @Version: 0.1
- */
+
 public class GenClassLoader extends ClassLoader {
 
     private ClassLoader parent;

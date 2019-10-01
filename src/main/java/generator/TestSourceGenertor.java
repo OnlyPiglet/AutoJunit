@@ -11,15 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-/**
- * @ProjectName: ajunit
- * @Package: generator
- * @ClassName: TestSourcesGenertor
- * @Author: 吴成昊
- * @Description:
- * @Date: 2019/9/26 14:20
- * @Version: 0.1
- */
 public class TestSourceGenertor {
 
     private File testSourceDirFile;

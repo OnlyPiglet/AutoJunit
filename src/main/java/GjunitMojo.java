@@ -20,15 +20,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-/**
- * @ProjectName: ajunit
- * @Package: PACKAGE_NAME
- * @ClassName: GjunitMoji
- * @Author: 吴成昊
- * @Description:
- * @Date: 2019/8/12 10:24
- * @Version: 0.1
- */
+
 @Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.RUNTIME)
 public class GjunitMojo extends AbstractMojo {
 
