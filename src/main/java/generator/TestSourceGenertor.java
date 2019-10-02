@@ -11,6 +11,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+/**
+ * @Author wuchenghao
+ * @ClassName TestSourceGenertor
+ * @Description generate the source of testjunit
+ * @Date 2019/10/2 14:39
+ */
 public class TestSourceGenertor {
 
     private File testSourceDirFile;
@@ -38,8 +44,6 @@ public class TestSourceGenertor {
                 Class<?> [] clazzs = m.getExceptionTypes();
 
                 for(Class<?> clazzd : clazzs){
-
-
 
                     JMethod jm = c.method(JMod.PUBLIC,void.class,m.getName()+"With"+clazzd.getSimpleName()+"Test");
                     JAnnotationUse jau = jm.annotate(Test .class);

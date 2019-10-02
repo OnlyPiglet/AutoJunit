@@ -11,7 +11,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-
+/**
+ * @Author wuchenghao
+ * @ClassName GjunitMojo
+ * @Description the inject point of maven plugin
+ * @Date 2019/10/2 14:39
+ */
 @Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.RUNTIME)
 public class GjunitMojo extends AbstractMojo {
 
@@ -61,7 +65,7 @@ public class GjunitMojo extends AbstractMojo {
 
 
         } catch (DependencyResolutionRequiredException e) {
-            e.printStackTrace();
+            LoggerHolder.log.error(e.getMessage(),e);
         }
         URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
         for (int i = 0; i < runtimeClasspathElements.size(); i++) {
@@ -82,8 +86,6 @@ public class GjunitMojo extends AbstractMojo {
 
 
         GenClassLoader gcl = new GenClassLoader(newLoader);
-        //--------------
-
 
         if(!testSource.exists()){
             try {
@@ -98,10 +100,7 @@ public class GjunitMojo extends AbstractMojo {
         for(File classfile : class_files){
             try {
 
-                LoggerHolder.log.info(classfile.getName());
-
                 String absClassfilePath = classfile.getAbsoluteFile().getAbsolutePath();
-
 
                 Class clazz = gcl.LoadClass(absClassfilePath);
 

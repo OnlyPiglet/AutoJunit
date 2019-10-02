@@ -4,11 +4,13 @@ import log.LoggerHolder;
 
 import java.io.*;
 
-
+/**
+ * @Author wuchenghao
+ * @ClassName GenClassLoader
+ * @Description load the maven target source class
+ * @Date 2019/10/2 14:39
+ */
 public class GenClassLoader extends ClassLoader {
-
-    private ClassLoader parent;
-
 
     public GenClassLoader(ClassLoader parent){
 
@@ -32,12 +34,9 @@ public class GenClassLoader extends ClassLoader {
 
         if(clazz == null){
 
-            absClassPath = absClassPath.replace("\\.",System.lineSeparator());
+            String real_absClassPath = absClassPath.replace("\\.",System.lineSeparator());
 
-            LoggerHolder.log.info(absClassPath);
-
-
-            clazz = this.getParent().loadClass(absClassPath);
+            clazz = this.getParent().loadClass(real_absClassPath);
 
         }
 
@@ -52,7 +51,7 @@ public class GenClassLoader extends ClassLoader {
             byte [] classData = getData(name);
 
             if(classData==null || classData.length == 0){
-
+                throw new IOException(name + "can't find in the source class target directory");
             }
             else{
                 //defineClass方法将字节码转化为类
@@ -64,8 +63,6 @@ public class GenClassLoader extends ClassLoader {
             return super.findClass(name);
 
         }
-        return null;
-
     }
 
 
