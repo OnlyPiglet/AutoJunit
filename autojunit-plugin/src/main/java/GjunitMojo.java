@@ -11,6 +11,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import resource.ProjectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +29,7 @@ import java.util.List;
 @Mojo(name="genjunit",requiresProject = true,defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,threadSafe = true,requiresDependencyCollection = ResolutionScope.RUNTIME)
 public class GjunitMojo extends AbstractMojo {
 
-
-
     private String[] extension = {"class"};
-
 
     GjunitMojo(){
         super();
@@ -43,6 +41,9 @@ public class GjunitMojo extends AbstractMojo {
             }
         }
     }
+
+    @Parameter(required = true,property = "projectType",defaultValue = ProjectType.App)
+    private String projectType;
 
     @Parameter(required = true,property = "testSource",defaultValue = "${project.build.testSourceDirectory}")
     private File testSource;
@@ -62,7 +63,6 @@ public class GjunitMojo extends AbstractMojo {
         List runtimeClasspathElements = null;
         try {
             runtimeClasspathElements = project.getRuntimeClasspathElements();
-
 
         } catch (DependencyResolutionRequiredException e) {
             LoggerHolder.log.error(e.getMessage(),e);

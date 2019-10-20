@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.github.onlypiglet</groupId>
+        <artifactId>autojunit</artifactId>
+        <version>1.0.1-alpha</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>autojunit-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+    <version>1.0.1-alpha</version>
+    <dependencies>
+
+        <dependency>
+            <groupId>com.github.onlypiglet</groupId>
+            <artifactId>autojunit-core</artifactId>
+            <version>1.0.1-alpha</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${maven-core-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${maven-plugin-annotations-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${maven-plugin-api-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm -->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>${reflectasm-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.unquietcode.tools.jcodemodel/codemodel -->
+        <dependency>
+            <groupId>com.unquietcode.tools.jcodemodel</groupId>
+            <artifactId>codemodel</artifactId>
+            <version>${codemodel-version}</version>
+        </dependency>
+
+    </dependencies>
+
+
+</project>

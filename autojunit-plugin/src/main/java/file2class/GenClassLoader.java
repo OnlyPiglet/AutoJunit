@@ -70,7 +70,6 @@ public class GenClassLoader extends ClassLoader {
     private byte[] getData(String classAbsName) throws IOException{
         InputStream in = null;
         ByteArrayOutputStream out = null;
-        LoggerHolder.log.info("classAbsName: "+classAbsName);
         try {
             String location = classAbsName;//.replace("\\",".");
             in=new FileInputStream(location);
